@@ -1,4 +1,27 @@
+import React from "react";
+import PopupWithForm from "./PopupWithForm";
+import PopupWithImage from "./PopupWithImage";
 export default function Main() {
+	const [avatarClick, setAvatarClick] = React.useState(false);
+	const [profileClick, setProfileClick] = React.useState(false);
+	const [placeClick, setPlaceClick] = React.useState(false);
+
+	const handleEditAvatarClick = (evt) => {
+		// setAvatarClick(true);
+		document.querySelector(".popup_type_avatar").classList.add("popup_opened");
+	};
+
+	const handleEditProfileClick = (evt) => {
+		// setProfileClick(true);
+		document.querySelector(".popup_type_edit").classList.add("popup_opened");
+	};
+
+	const handleAddPlaceClick = (evt) => {
+		document.querySelector(".popup_type_card").classList.add("popup_opened");
+		// setPlaceClick(true);
+	};
+	const handleCloseButton = (evt) => {};
+
 	return (
 		<main className="main">
 			<section className="profile">
@@ -7,6 +30,7 @@ export default function Main() {
 						src={require("../images/edit_vector.svg").default}
 						alt="pen icon"
 						className="profile__avatar-edit-icon"
+						onClick={handleEditAvatarClick}
 					/>
 				</div>
 				<div className="profile-info">
@@ -16,6 +40,7 @@ export default function Main() {
 							type="button"
 							className="profile-info__btn"
 							aria-label="edit button"
+							onClick={handleEditProfileClick}
 						>
 							<img
 								className="profile-info__edit-button"
@@ -31,185 +56,16 @@ export default function Main() {
 						className="profile__add-sign"
 						src={require("../images/add_Vector.svg").default}
 						alt="add-button"
+						onClick={handleAddPlaceClick}
 					/>
 				</button>
 			</section>
 			<section className="popups">
-				<div className="popup popup_type_edit">
-					<div className="popup__box">
-						<div className="popup__header">
-							<h2 className="popup__title">Edit profile</h2>
-							<button
-								className="popup__close-btn popup__close-btn_type_edit"
-								type="button"
-							>
-								<img
-									src={require("../images/Close_Icon.svg").default}
-									alt="close button"
-									className="popup__close-sign"
-								/>
-							</button>
-						</div>
-						<form className="form form_type_edit" name="edit-form" novalidate>
-							<fieldset className="form__fieldset">
-								<input
-									type="text"
-									id="name"
-									name="name"
-									className="form__input form__input_type_name"
-									placeholder="Name Surname"
-									required
-									maxlength="40"
-									minlength="2"
-								/>
-								<span className="form__input-error name-error"></span>
-							</fieldset>
-							<fieldset className="form__fieldset">
-								<input
-									type="text"
-									id="description"
-									name="description"
-									className="form__input form__input_type_description"
-									placeholder="description"
-									required
-									maxlength="200"
-									minlength="2"
-								/>
-								<span className="form__input-error description-error"></span>
-							</fieldset>
-							<fieldset className="form__fieldset form__fieldset_type_submit">
-								<button className="form__button" type="submit">
-									Save
-								</button>
-							</fieldset>
-						</form>
-					</div>
-				</div>
-				<div className="popup popup_type_card">
-					<div className="popup__box">
-						<div className="popup__header">
-							<h2 className="popup__title">New Place</h2>
-							<button
-								className="popup__close-btn popup__close-btn_type_card"
-								type="button"
-							>
-								<img
-									src={require("../images/Close_Icon.svg").default}
-									alt="close button"
-									className="popup__close-sign"
-								/>
-							</button>
-						</div>
-
-						<form className="form form_type_card" name="card-form" novalidate>
-							<fieldset className="form__fieldset">
-								<input
-									type="text"
-									id="place"
-									name="place"
-									className="form__input form__input_type_place"
-									placeholder="Title"
-									required
-									maxlength="30"
-									minlength="1"
-								/>
-								<span className="form__input-error place-error"></span>
-							</fieldset>
-							<fieldset className="form__fieldset">
-								<input
-									type="url"
-									id="link"
-									name="link"
-									className="form__input form__input_type_link"
-									placeholder="Image link"
-									required
-								/>
-								<span className="form__input-error link-error"></span>
-							</fieldset>
-							<fieldset className="form__fieldset form__fieldset_type_submit">
-								<button className="form__button" type="submit">
-									Create
-								</button>
-							</fieldset>
-						</form>
-					</div>
-				</div>
-				<div className="popup popup_type_image">
-					<div className="popup__image-wrapper">
-						<button
-							type="button"
-							className="popup__close-btn popup__close-btn_type_image"
-						>
-							<img
-								src={require("../images/Close_Icon.svg").default}
-								alt="close sign"
-								className="popup__close-sign popup__close-sign_type_image"
-							/>
-						</button>
-						<img alt="Location Image" className="popup__card-image" />
-						<h2 className="popup__card-title"></h2>
-					</div>
-				</div>
-				<div className="popup popup_type_delete">
-					<div className="popup__box">
-						<div className="popup__header">
-							<h2 className="popup__title">Are you sure?</h2>
-							<button
-								className="popup__close-btn popup__close-btn_type_edit"
-								type="button"
-							>
-								<img
-									src={require("../images/Close_Icon.svg").default}
-									alt="close button"
-									className="popup__close-sign"
-								/>
-							</button>
-						</div>
-						<form className="form form_type_delete" name="delete-form" novalidate>
-							<fieldset className="form__fieldset form__fieldset_type_submit">
-								<button className="form__button" type="submit">
-									Yes
-								</button>
-							</fieldset>
-						</form>
-					</div>
-				</div>
-				<div className="popup popup_type_avatar">
-					<div className="popup__box">
-						<div className="popup__header">
-							<h2 className="popup__title">Change Profile Picture</h2>
-							<button
-								className="popup__close-btn popup__close-btn_type_card"
-								type="button"
-							>
-								<img
-									src={require("../images/Close_Icon.svg").default}
-									alt="close button"
-									className="popup__close-sign"
-								/>
-							</button>
-						</div>
-
-						<form className="form form_type_avatar" name="avatar-form" novalidate>
-							<fieldset className="form__fieldset">
-								<input
-									type="url"
-									id="avatar-link"
-									name="avatar-link"
-									className="form__input form__input_type_link"
-									placeholder="Avatar link"
-									required
-								/>
-								<span className="form__input-error avatar-link-error"></span>
-							</fieldset>
-							<fieldset className="form__fieldset form__fieldset_type_submit">
-								<button className="form__button" type="submit">
-									Save
-								</button>
-							</fieldset>
-						</form>
-					</div>
-				</div>
+				<PopupWithForm name={"edit"} title={"Edit Form"} />
+				<PopupWithForm name={"card"} title={"New place"} />
+				<PopupWithForm name={"avatar"} title={"Update profile picture"} />
+				<PopupWithForm name={"delete"} title={"Are you sure?"} />
+				<PopupWithImage />
 			</section>
 
 			<section className="elements"></section>
