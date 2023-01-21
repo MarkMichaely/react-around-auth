@@ -1,18 +1,33 @@
 import React from "react";
 import api from "../utils/api";
+import Card from "./Card";
 import PopupWithForm from "./PopupWithForm";
 import PopupWithImage from "./PopupWithImage";
 export default function Main(props) {
 	const [userName, SetUserName] = React.useState("");
 	const [userDescription, SetUserDescription] = React.useState("");
 	const [userAvatar, SetUserAvatar] = React.useState("");
+	const [cards, setCards] = React.useState([]);
 
 	React.useEffect(() => {
-		api.getUserInfo().then((res) => {
-			SetUserName(res.name);
-			SetUserDescription(res.about);
-			SetUserAvatar(res.avatar);
-		});
+		api
+			.getUserInfo()
+			.then((res) => {
+				SetUserName(res.name);
+				SetUserDescription(res.about);
+				SetUserAvatar(res.avatar);
+			})
+			.catch((err) => console.log(err));
+	}, []);
+
+	React.useEffect(() => {
+		api
+			.getInitialCards()
+			.then((res) => {
+				setCards([]);
+				setCards(res);
+			})
+			.catch((err) => console.log(err));
 	}, []);
 	return (
 		<main className="main">
@@ -78,11 +93,32 @@ export default function Main(props) {
 					isOpen={props.isEditAvatarPopupOpen}
 					onClose={props.onClose}
 				/>
-				<PopupWithForm name={"delete"} title={"Are you sure?"} />
-				<PopupWithImage />
+				<PopupWithForm
+					name={"delete"}
+					title={"Are you sure?"}
+					onClose={props.onClose}
+				/>
+				<PopupWithImage
+					onClose={props.onClose}
+					isOpen={props.isImagePopupOpen}
+					selectedCard={props.selectedCard}
+				/>
 			</section>
 
-			<section className="elements"></section>
+			<section className="elements">
+				{cards.map((card) => {
+					return (
+						<Card
+							key={card._id}
+							card={card}
+							name={card.name}
+							link={card.link}
+							likes={card.likes.length}
+							onCardClick={props.onCardClick}
+						/>
+					);
+				})}
+			</section>
 		</main>
 	);
 }

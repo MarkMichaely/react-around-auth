@@ -4,27 +4,33 @@ import Header from "./components/Header";
 import Main from "./components/Main";
 
 function App() {
-	const [isEditProfilePopupOpen, setisEditProfilePopupOpen] = useState(false);
+	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+	const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+	const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
 
 	const handleEditAvatarClick = () => {
 		setIsEditAvatarPopupOpen(true);
 	};
 
 	const handleEditProfileClick = () => {
-		setisEditProfilePopupOpen(true);
+		setIsEditProfilePopupOpen(true);
 	};
 
 	const handleAddPlaceClick = () => {
 		setIsAddPlacePopupOpen(true);
 	};
-	const handleCardClick = () => {};
+	const handleCardClick = (card) => {
+		setIsImagePopupOpen(true);
+		setSelectedCard({ name: card.name, link: card.link });
+	};
 
 	const closeAllPopUps = () => {
 		setIsAddPlacePopupOpen(false);
 		setIsEditAvatarPopupOpen(false);
-		setisEditProfilePopupOpen(false);
+		setIsEditProfilePopupOpen(false);
+		setIsImagePopupOpen(false);
 	};
 	return (
 		<div className="body">
@@ -38,7 +44,9 @@ function App() {
 					isEditProfilePopupOpen={isEditProfilePopupOpen}
 					isAddPlacePopupOpen={isAddPlacePopupOpen}
 					isEditAvatarPopupOpen={isEditAvatarPopupOpen}
+					isImagePopupOpen={isImagePopupOpen}
 					onClose={closeAllPopUps}
+					selectedCard={selectedCard}
 				/>
 				<Footer />
 			</div>
