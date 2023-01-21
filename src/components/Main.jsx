@@ -1,13 +1,27 @@
 import React from "react";
+import api from "../utils/api";
 import PopupWithForm from "./PopupWithForm";
 import PopupWithImage from "./PopupWithImage";
 export default function Main(props) {
-	const handleCloseButton = (evt) => {};
+	const [userName, SetUserName] = React.useState("");
+	const [userDescription, SetUserDescription] = React.useState("");
+	const [userAvatar, SetUserAvatar] = React.useState("");
 
+	React.useEffect(() => {
+		api.getUserInfo().then((res) => {
+			SetUserName(res.name);
+			SetUserDescription(res.about);
+			SetUserAvatar(res.avatar);
+		});
+	}, []);
 	return (
 		<main className="main">
 			<section className="profile">
-				<div className="profile__avatar" onClick={props.onEditAvatarClick}>
+				<div
+					className="profile__avatar"
+					onClick={props.onEditAvatarClick}
+					style={{ backgroundImage: `url(${userAvatar})` }}
+				>
 					<img
 						src={require("../images/edit_vector.svg").default}
 						alt="pen icon"
@@ -16,7 +30,7 @@ export default function Main(props) {
 				</div>
 				<div className="profile-info">
 					<div className="profile-info__wrapper">
-						<h1 className="profile-info__name">Jacques Cousteau</h1>
+						<h1 className="profile-info__name">{userName}</h1>
 						<button
 							type="button"
 							className="profile-info__btn"
@@ -30,7 +44,7 @@ export default function Main(props) {
 							/>
 						</button>
 					</div>
-					<p className="profile-info__description">Explorer</p>
+					<p className="profile-info__description">{userDescription}</p>
 				</div>
 				<button
 					className="profile__add-btn"
