@@ -43,8 +43,6 @@ function App() {
 					onAddPlaceClick={handleAddPlaceClick}
 					onEditAvatarClick={handleEditAvatarClick}
 					onCardClick={handleCardClick}
-					onClose={closeAllPopUps}
-					selectedCard={selectedCard}
 				/>
 				<section className="popups">
 					<PopupWithForm

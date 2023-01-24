@@ -1,8 +1,7 @@
 import React from "react";
 import api from "../utils/api";
 import Card from "./Card";
-import PopupWithForm from "./PopupWithForm";
-import PopupWithImage from "./PopupWithImage";
+
 export default function Main(props) {
 	const [userName, SetUserName] = React.useState("");
 	const [userDescription, SetUserDescription] = React.useState("");
@@ -73,36 +72,6 @@ export default function Main(props) {
 						alt="add-button"
 					/>
 				</button>
-			</section>
-			<section className="popups">
-				<PopupWithForm
-					name={"edit"}
-					title={"Edit Form"}
-					isOpen={props.isEditProfilePopupOpen}
-					onClose={props.onClose}
-				/>
-				<PopupWithForm
-					name={"card"}
-					title={"New place"}
-					isOpen={props.isAddPlacePopupOpen}
-					onClose={props.onClose}
-				/>
-				<PopupWithForm
-					name={"avatar"}
-					title={"Update profile picture"}
-					isOpen={props.isEditAvatarPopupOpen}
-					onClose={props.onClose}
-				/>
-				<PopupWithForm
-					name={"delete"}
-					title={"Are you sure?"}
-					onClose={props.onClose}
-				/>
-				<PopupWithImage
-					onClose={props.onClose}
-					isOpen={props.isImagePopupOpen}
-					selectedCard={props.selectedCard}
-				/>
 			</section>
 
 			<section className="elements">
