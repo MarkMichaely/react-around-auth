@@ -1,3 +1,4 @@
+import closeIcon from "../images/Close_Icon.svg";
 export default function PopupWithForm(props) {
 	return (
 		<div
@@ -13,14 +14,21 @@ export default function PopupWithForm(props) {
 						type="button"
 						onClick={props.onClose}
 					>
-						<img
-							src={require("../images/Close_Icon.svg").default}
-							alt="close button"
-							className="popup__close-sign"
-						/>
+						<img src={closeIcon} alt="close button" className="popup__close-sign" />
 					</button>
 				</div>
-				{props.children}
+				<form
+					className={`form form_type_${props.name}`}
+					name={`${props.name}-form`}
+					noValidate
+				>
+					{props.children}
+					<fieldset className="form__fieldset form__fieldset_type_submit">
+						<button className="form__button" type="submit">
+							{props.buttonText}
+						</button>
+					</fieldset>
+				</form>
 			</div>
 		</div>
 	);

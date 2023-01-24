@@ -1,20 +1,23 @@
 import React from "react";
 import api from "../utils/api";
 import Card from "./Card";
+import editVector from "../images/edit_vector.svg";
+import editButton from "../images/Edit_Button.svg";
+import addVector from "../images/add_Vector.svg";
 
 export default function Main(props) {
-	const [userName, SetUserName] = React.useState("");
-	const [userDescription, SetUserDescription] = React.useState("");
-	const [userAvatar, SetUserAvatar] = React.useState("");
+	const [userName, setUserName] = React.useState("");
+	const [userDescription, setUserDescription] = React.useState("");
+	const [userAvatar, setUserAvatar] = React.useState("");
 	const [cards, setCards] = React.useState([]);
 
 	React.useEffect(() => {
 		api
 			.getUserInfo()
 			.then((res) => {
-				SetUserName(res.name);
-				SetUserDescription(res.about);
-				SetUserAvatar(res.avatar);
+				setUserName(res.name);
+				setUserDescription(res.about);
+				setUserAvatar(res.avatar);
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -23,7 +26,6 @@ export default function Main(props) {
 		api
 			.getInitialCards()
 			.then((res) => {
-				setCards([]);
 				setCards(res);
 			})
 			.catch((err) => console.log(err));
@@ -37,7 +39,7 @@ export default function Main(props) {
 					style={{ backgroundImage: `url(${userAvatar})` }}
 				>
 					<img
-						src={require("../images/edit_vector.svg").default}
+						src={editVector}
 						alt="pen icon"
 						className="profile__avatar-edit-icon"
 					/>
@@ -53,7 +55,7 @@ export default function Main(props) {
 						>
 							<img
 								className="profile-info__edit-button"
-								src={require("../images/Edit_Button.svg").default}
+								src={editButton}
 								alt="edit-button"
 							/>
 						</button>
@@ -66,11 +68,7 @@ export default function Main(props) {
 					type="button"
 					onClick={props.onAddPlaceClick}
 				>
-					<img
-						className="profile__add-sign"
-						src={require("../images/add_Vector.svg").default}
-						alt="add-button"
-					/>
+					<img className="profile__add-sign" src={addVector} alt="add-button" />
 				</button>
 			</section>
 

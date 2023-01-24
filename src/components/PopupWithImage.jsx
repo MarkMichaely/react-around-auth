@@ -1,3 +1,5 @@
+import closeIcon from "../images/Close_Icon.svg";
+
 export default function PopupWithImage(props) {
 	return (
 		<div
@@ -12,7 +14,7 @@ export default function PopupWithImage(props) {
 					onClick={props.onClose}
 				>
 					<img
-						src={require("../images/Close_Icon.svg").default}
+						src={closeIcon}
 						alt="close sign"
 						className="popup__close-sign popup__close-sign_type_image"
 					/>
