@@ -27,7 +27,7 @@ class Api {
 			headers: this.headers,
 		});
 	}
-	async editProfile({ name, about }) {
+	async setUserInfo({ name, about }) {
 		return this._request(`${this.url}/users/me`, {
 			method: "PATCH",
 			headers: this.headers,
@@ -54,18 +54,7 @@ class Api {
 			headers: this.headers,
 		});
 	}
-	// async likeCard(cardId) {
-	// 	return this._request(`${this.url}/cards/likes/${cardId}`, {
-	// 		method: "PUT",
-	// 		headers: this.headers,
-	// 	});
-	// }
-	// async unLikeCard(cardId) {
-	// 	return this._request(`${this.url}/cards/likes/${cardId}`, {
-	// 		method: "DELETE",
-	// 		headers: this.headers,
-	// 	});
-	// }
+
 	async changeLikeCardStatus(cardId, isLiked) {
 		if (!isLiked) {
 			return this._request(`${this.url}/cards/likes/${cardId}`, {

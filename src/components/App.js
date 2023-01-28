@@ -6,6 +6,7 @@ import PopupWithForm from "./PopupWithForm";
 import PopupWithImage from "./PopupWithImage";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import EditProfilePopup from "./EditProfilePopup";
 
 function App() {
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -82,6 +83,16 @@ function App() {
 			})
 			.catch((err) => console.log(err));
 	}
+	function handleUpdateUser(userInfo) {
+		api
+			.setUserInfo({ name: userInfo.name, about: userInfo.about })
+			.then((res) => {
+				setCurrentUser({ name: res.name, about: res.about, avatar: res.avatar });
+
+				closeAllPopUps();
+			})
+			.catch((err) => console.log(err));
+	}
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className="body">
@@ -97,41 +108,11 @@ function App() {
 						cards={cards}
 					/>
 					<section className="popups">
-						<PopupWithForm
-							name={"edit"}
-							title={"Edit Form"}
+						<EditProfilePopup
 							isOpen={isEditProfilePopupOpen}
 							onClose={closeAllPopUps}
-							buttonText={"Save"}
-						>
-							<fieldset className="form__fieldset">
-								<input
-									type="text"
-									id="name"
-									name="name"
-									className="form__input form__input_type_name"
-									placeholder="Name Surname"
-									required
-									maxLength="40"
-									minLength="2"
-								/>
-								<span className="form__input-error name-error"></span>
-							</fieldset>
-							<fieldset className="form__fieldset">
-								<input
-									type="text"
-									id="description"
-									name="description"
-									className="form__input form__input_type_description"
-									placeholder="Description"
-									required
-									maxLength="200"
-									minLength="2"
-								/>
-								<span className="form__input-error description-error"></span>
-							</fieldset>
-						</PopupWithForm>
-
+							onUpdateUser={handleUpdateUser}
+						/>
 						<PopupWithForm
 							name={"card"}
 							title={"New place"}
