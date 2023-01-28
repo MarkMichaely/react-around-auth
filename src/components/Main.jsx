@@ -4,23 +4,12 @@ import Card from "./Card";
 import editVector from "../images/edit_vector.svg";
 import editButton from "../images/Edit_Button.svg";
 import addVector from "../images/add_Vector.svg";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export default function Main(props) {
-	const [userName, setUserName] = React.useState("");
-	const [userDescription, setUserDescription] = React.useState("");
-	const [userAvatar, setUserAvatar] = React.useState("");
 	const [cards, setCards] = React.useState([]);
 
-	React.useEffect(() => {
-		api
-			.getUserInfo()
-			.then((res) => {
-				setUserName(res.name);
-				setUserDescription(res.about);
-				setUserAvatar(res.avatar);
-			})
-			.catch((err) => console.log(err));
-	}, []);
+	const currentUser = React.useContext(CurrentUserContext);
 
 	React.useEffect(() => {
 		api
@@ -36,7 +25,7 @@ export default function Main(props) {
 				<div
 					className="profile__avatar"
 					onClick={props.onEditAvatarClick}
-					style={{ backgroundImage: `url(${userAvatar})` }}
+					style={{ backgroundImage: `url(${currentUser.avatar})` }}
 				>
 					<img
 						src={editVector}
@@ -46,7 +35,7 @@ export default function Main(props) {
 				</div>
 				<div className="profile-info">
 					<div className="profile-info__wrapper">
-						<h1 className="profile-info__name">{userName}</h1>
+						<h1 className="profile-info__name">{currentUser.name}</h1>
 						<button
 							type="button"
 							className="profile-info__btn"
@@ -60,7 +49,7 @@ export default function Main(props) {
 							/>
 						</button>
 					</div>
-					<p className="profile-info__description">{userDescription}</p>
+					<p className="profile-info__description">{currentUser.about}</p>
 				</div>
 				<button
 					className="profile__add-btn"
