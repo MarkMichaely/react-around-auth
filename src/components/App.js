@@ -14,6 +14,16 @@ function App() {
 	const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
 	const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
 	const [currentUser, setCurrentUser] = useState({});
+	const [cards, setCards] = React.useState([]);
+
+	React.useEffect(() => {
+		api
+			.getInitialCards()
+			.then((res) => {
+				setCards(res);
+			})
+			.catch((err) => console.log(err));
+	}, []);
 
 	React.useEffect(() => {
 		api
@@ -46,6 +56,32 @@ function App() {
 		setIsEditProfilePopupOpen(false);
 		setIsImagePopupOpen(false);
 	};
+
+	function handleCardLike(card) {
+		const isLiked = card.likes.some((user) => user._id === currentUser._id);
+		api
+			.changeLikeCardStatus(card._id, isLiked)
+			.then((newCard) => {
+				setCards((state) =>
+					state.map((currentCard) =>
+						currentCard._id === card._id ? newCard : currentCard
+					)
+				);
+			})
+			.catch((err) => console.log(err));
+	}
+	function handleCardDelete(card) {
+		api
+			.removeCard(card._id)
+			.then(() => {
+				setCards((state) =>
+					state.filter((currentCard) =>
+						currentCard._id === card._id ? "" : currentCard
+					)
+				);
+			})
+			.catch((err) => console.log(err));
+	}
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className="body">
@@ -56,6 +92,9 @@ function App() {
 						onAddPlaceClick={handleAddPlaceClick}
 						onEditAvatarClick={handleEditAvatarClick}
 						onCardClick={handleCardClick}
+						onCardLike={handleCardLike}
+						onCardDelete={handleCardDelete}
+						cards={cards}
 					/>
 					<section className="popups">
 						<PopupWithForm

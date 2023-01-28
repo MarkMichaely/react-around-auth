@@ -1,5 +1,4 @@
 import React from "react";
-import api from "../utils/api";
 import Card from "./Card";
 import editVector from "../images/edit_vector.svg";
 import editButton from "../images/Edit_Button.svg";
@@ -7,18 +6,8 @@ import addVector from "../images/add_Vector.svg";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export default function Main(props) {
-	const [cards, setCards] = React.useState([]);
-
 	const currentUser = React.useContext(CurrentUserContext);
 
-	React.useEffect(() => {
-		api
-			.getInitialCards()
-			.then((res) => {
-				setCards(res);
-			})
-			.catch((err) => console.log(err));
-	}, []);
 	return (
 		<main className="main">
 			<section className="profile">
@@ -62,7 +51,7 @@ export default function Main(props) {
 			</section>
 
 			<section className="elements">
-				{cards.map((card) => {
+				{props.cards.map((card) => {
 					return (
 						<Card
 							key={card._id}
@@ -71,6 +60,8 @@ export default function Main(props) {
 							link={card.link}
 							likes={card.likes.length}
 							onCardClick={props.onCardClick}
+							onCardLike={props.onCardLike}
+							onCardDelete={props.onCardDelete}
 						/>
 					);
 				})}
