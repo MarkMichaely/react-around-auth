@@ -11,6 +11,7 @@ export default function EditAvatarPopup(props) {
 		props.onUpdateAvatar({
 			avatar: imageRef.current.value,
 		});
+		imageRef.current.value = "";
 	}
 
 	return (

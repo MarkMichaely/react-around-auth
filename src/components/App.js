@@ -61,7 +61,7 @@ function App() {
 	};
 
 	function handleCardLike(card) {
-		const isLiked = card.likes.some((user) => user._id === currentUser._id);
+		const isLiked = card.likes.some((user) => user._id == currentUser._id);
 		api
 			.changeLikeCardStatus(card._id, isLiked)
 			.then((newCard) => {
@@ -89,7 +89,7 @@ function App() {
 		api
 			.setUserInfo({ name: userInfo.name, about: userInfo.about })
 			.then((res) => {
-				setCurrentUser({ name: res.name, about: res.about, avatar: res.avatar });
+				setCurrentUser(res);
 
 				closeAllPopUps();
 			})
@@ -99,7 +99,7 @@ function App() {
 		api
 			.setAvatar(userAvatar.avatar)
 			.then((res) => {
-				setCurrentUser({ name: res.name, about: res.about, avatar: res.avatar });
+				setCurrentUser(res);
 				closeAllPopUps();
 			})
 			.catch((err) => console.log(err));
