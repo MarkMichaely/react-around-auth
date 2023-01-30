@@ -8,6 +8,7 @@ import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 
 function App() {
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -103,6 +104,15 @@ function App() {
 			})
 			.catch((err) => console.log(err));
 	}
+	function handleAddPlaceSubmit(newCard) {
+		api
+			.addCard({ name: newCard.name, link: newCard.link })
+			.then((res) => {
+				setCards([res, ...cards]);
+				closeAllPopUps();
+			})
+			.catch((err) => console.log(err));
+	}
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className="body">
@@ -123,38 +133,11 @@ function App() {
 							onClose={closeAllPopUps}
 							onUpdateUser={handleUpdateUser}
 						/>
-						<PopupWithForm
-							name={"card"}
-							title={"New place"}
+						<AddPlacePopup
 							isOpen={isAddPlacePopupOpen}
 							onClose={closeAllPopUps}
-							buttonText={"Create"}
-						>
-							<fieldset className="form__fieldset">
-								<input
-									type="text"
-									id="place"
-									name="place"
-									className="form__input form__input_type_place"
-									placeholder="Title"
-									required
-									maxLength="30"
-									minLength="1"
-								/>
-								<span className="form__input-error place-error"></span>
-							</fieldset>
-							<fieldset className="form__fieldset">
-								<input
-									type="url"
-									id="link"
-									name="link"
-									className="form__input form__input_type_link"
-									placeholder="Image link"
-									required
-								/>
-								<span className="form__input-error link-error"></span>
-							</fieldset>
-						</PopupWithForm>
+							onAddPlaceSubmit={handleAddPlaceSubmit}
+						/>
 						<EditAvatarPopup
 							isOpen={isEditAvatarPopupOpen}
 							onClose={closeAllPopUps}
