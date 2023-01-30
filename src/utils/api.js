@@ -69,7 +69,7 @@ class Api {
 		}
 	}
 
-	async changeProfilePicture(link) {
+	async setAvatar(link) {
 		return this._request(`${this.url}/users/me/avatar`, {
 			method: "PATCH",
 			headers: this.headers,

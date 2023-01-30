@@ -7,6 +7,7 @@ import PopupWithImage from "./PopupWithImage";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -93,6 +94,15 @@ function App() {
 			})
 			.catch((err) => console.log(err));
 	}
+	function handleUpdateAvatar(userAvatar) {
+		api
+			.setAvatar(userAvatar.avatar)
+			.then((res) => {
+				setCurrentUser({ name: res.name, about: res.about, avatar: res.avatar });
+				closeAllPopUps();
+			})
+			.catch((err) => console.log(err));
+	}
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className="body">
@@ -145,25 +155,11 @@ function App() {
 								<span className="form__input-error link-error"></span>
 							</fieldset>
 						</PopupWithForm>
-						<PopupWithForm
-							name={"avatar"}
-							title={"Update profile picture"}
+						<EditAvatarPopup
 							isOpen={isEditAvatarPopupOpen}
 							onClose={closeAllPopUps}
-							buttonText={"Save"}
-						>
-							<fieldset className="form__fieldset">
-								<input
-									type="url"
-									id="avatar-link"
-									name="avatar-link"
-									className="form__input form__input_type_link"
-									placeholder="Avatar link"
-									required
-								/>
-								<span className="form__input-error avatar-link-error"></span>
-							</fieldset>
-						</PopupWithForm>
+							onUpdateAvatar={handleUpdateAvatar}
+						/>
 						<PopupWithForm
 							name={"delete"}
 							title={"Are you sure?"}
