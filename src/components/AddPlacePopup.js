@@ -14,17 +14,19 @@ export default function AddPlacePopup(props) {
 	function handleSubmit(e) {
 		e.preventDefault();
 		props.onAddPlaceSubmit({ name: name, link: link });
-		setLink("");
-		setName("");
 	}
 
+	React.useEffect(() => {
+		setName("");
+		setLink("");
+	}, [props.isOpen]);
 	return (
 		<PopupWithForm
 			name={"card"}
 			title={"New place"}
 			isOpen={props.isOpen}
 			onClose={props.onClose}
-			buttonText={"Create"}
+			buttonText={props.isLoading ? "Saving..." : "Create"}
 			onSubmit={handleSubmit}
 		>
 			<fieldset className="form__fieldset">

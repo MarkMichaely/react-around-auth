@@ -11,16 +11,18 @@ export default function EditAvatarPopup(props) {
 		props.onUpdateAvatar({
 			avatar: imageRef.current.value,
 		});
-		imageRef.current.value = "";
 	}
 
+	React.useEffect(() => {
+		imageRef.current.value = "";
+	}, [props.isOpen]);
 	return (
 		<PopupWithForm
 			name={"avatar"}
 			title={"Update profile picture"}
 			isOpen={props.isOpen}
 			onClose={props.onClose}
-			buttonText={"Save"}
+			buttonText={props.isLoading ? "Saving..." : "Save"}
 			onSubmit={handleSubmit}
 		>
 			<fieldset className="form__fieldset">

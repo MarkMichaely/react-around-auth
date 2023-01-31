@@ -21,7 +21,6 @@ export default function PopupWithForm(props) {
 					onSubmit={props.onSubmit}
 					className={`form form_type_${props.name}`}
 					name={`${props.name}-form`}
-					noValidate
 				>
 					{props.children}
 					<fieldset className="form__fieldset form__fieldset_type_submit">

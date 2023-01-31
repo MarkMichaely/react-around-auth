@@ -10,7 +10,7 @@ export default function EditProfilePopup(props) {
 	React.useEffect(() => {
 		setName(currentUser.name);
 		setDescription(currentUser.about);
-	}, [currentUser]);
+	}, [currentUser, props.isOpen]);
 
 	function handleNameChange(e) {
 		setName(e.target.value);
@@ -29,7 +29,7 @@ export default function EditProfilePopup(props) {
 			isOpen={props.isOpen}
 			onClose={props.onClose}
 			onSubmit={handleSubmit}
-			buttonText={"Save"}
+			buttonText={props.isLoading ? "Saving..." : "Save"}
 		>
 			<fieldset className="form__fieldset">
 				<input

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import Main from "./Main";
@@ -17,7 +17,8 @@ function App() {
 	const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
 	const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
 	const [currentUser, setCurrentUser] = useState({});
-	const [cards, setCards] = React.useState([]);
+	const [cards, setCards] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
 
 	React.useEffect(() => {
 		api
@@ -59,7 +60,17 @@ function App() {
 		setIsEditProfilePopupOpen(false);
 		setIsImagePopupOpen(false);
 	};
+	useEffect(() => {
+		const closeByEscape = (e) => {
+			if (e.key === "Escape") {
+				closeAllPopUps();
+			}
+		};
 
+		document.addEventListener("keydown", closeByEscape);
+
+		return () => document.removeEventListener("keydown", closeByEscape);
+	}, []);
 	function handleCardLike(card) {
 		const isLiked = card.likes.some((user) => user._id == currentUser._id);
 		api
@@ -86,6 +97,7 @@ function App() {
 			.catch((err) => console.log(err));
 	}
 	function handleUpdateUser(userInfo) {
+		setIsLoading(true);
 		api
 			.setUserInfo({ name: userInfo.name, about: userInfo.about })
 			.then((res) => {
@@ -93,25 +105,30 @@ function App() {
 
 				closeAllPopUps();
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => console.log(err))
+			.finally(() => setIsLoading(false));
 	}
 	function handleUpdateAvatar(userAvatar) {
+		setIsLoading(true);
 		api
 			.setAvatar(userAvatar.avatar)
 			.then((res) => {
 				setCurrentUser(res);
 				closeAllPopUps();
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => console.log(err))
+			.finally(() => setIsLoading(false));
 	}
 	function handleAddPlaceSubmit(newCard) {
+		setIsLoading(true);
 		api
 			.addCard({ name: newCard.name, link: newCard.link })
 			.then((res) => {
 				setCards([res, ...cards]);
 				closeAllPopUps();
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => console.log(err))
+			.finally(() => setIsLoading(false));
 	}
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
@@ -132,28 +149,32 @@ function App() {
 							isOpen={isEditProfilePopupOpen}
 							onClose={closeAllPopUps}
 							onUpdateUser={handleUpdateUser}
+							isLoading={isLoading}
 						/>
 						<AddPlacePopup
 							isOpen={isAddPlacePopupOpen}
 							onClose={closeAllPopUps}
 							onAddPlaceSubmit={handleAddPlaceSubmit}
+							isLoading={isLoading}
 						/>
 						<EditAvatarPopup
 							isOpen={isEditAvatarPopupOpen}
 							onClose={closeAllPopUps}
 							onUpdateAvatar={handleUpdateAvatar}
+							isLoading={isLoading}
 						/>
 						<PopupWithForm
 							name={"delete"}
 							title={"Are you sure?"}
 							onClose={closeAllPopUps}
 							buttonText={"Yes"}
-						></PopupWithForm>
+							isLoading={isLoading}
+						/>
 						<PopupWithImage
 							onClose={closeAllPopUps}
 							isOpen={isImagePopupOpen}
 							selectedCard={selectedCard}
-						></PopupWithImage>
+						/>
 					</section>
 					<Footer />
 				</div>
