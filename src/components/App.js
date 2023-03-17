@@ -9,6 +9,10 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import { Redirect, Route, Switch } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
+import Login from "./Login";
+import Register from "./Register";
 
 function App() {
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -19,6 +23,7 @@ function App() {
 	const [currentUser, setCurrentUser] = useState({});
 	const [cards, setCards] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	React.useEffect(() => {
 		api
@@ -72,7 +77,7 @@ function App() {
 		return () => document.removeEventListener("keydown", closeByEscape);
 	}, []);
 	function handleCardLike(card) {
-		const isLiked = card.likes.some((user) => user._id == currentUser._id);
+		const isLiked = card.likes.some((user) => user._id === currentUser._id);
 		api
 			.changeLikeCardStatus(card._id, isLiked)
 			.then((newCard) => {
@@ -132,53 +137,68 @@ function App() {
 	}
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
-			<div className="body">
-				<div className="page">
-					<Header />
-					<Main
-						onEditProfileClick={handleEditProfileClick}
-						onAddPlaceClick={handleAddPlaceClick}
-						onEditAvatarClick={handleEditAvatarClick}
-						onCardClick={handleCardClick}
-						onCardLike={handleCardLike}
-						onCardDelete={handleCardDelete}
-						cards={cards}
-					/>
-					<section className="popups">
-						<EditProfilePopup
-							isOpen={isEditProfilePopupOpen}
-							onClose={closeAllPopUps}
-							onUpdateUser={handleUpdateUser}
-							isLoading={isLoading}
+
+			<div className="page">
+				<Header />
+				<Switch>
+					<ProtectedRoute exact path='/' isLoggedIn={isLoggedIn}>
+						<Main
+							onEditProfileClick={handleEditProfileClick}
+							onAddPlaceClick={handleAddPlaceClick}
+							onEditAvatarClick={handleEditAvatarClick}
+							onCardClick={handleCardClick}
+							onCardLike={handleCardLike}
+							onCardDelete={handleCardDelete}
+							cards={cards}
 						/>
-						<AddPlacePopup
-							isOpen={isAddPlacePopupOpen}
-							onClose={closeAllPopUps}
-							onAddPlaceSubmit={handleAddPlaceSubmit}
-							isLoading={isLoading}
-						/>
-						<EditAvatarPopup
-							isOpen={isEditAvatarPopupOpen}
-							onClose={closeAllPopUps}
-							onUpdateAvatar={handleUpdateAvatar}
-							isLoading={isLoading}
-						/>
-						<PopupWithForm
-							name={"delete"}
-							title={"Are you sure?"}
-							onClose={closeAllPopUps}
-							buttonText={"Yes"}
-							isLoading={isLoading}
-						/>
-						<PopupWithImage
-							onClose={closeAllPopUps}
-							isOpen={isImagePopupOpen}
-							selectedCard={selectedCard}
-						/>
-					</section>
-					<Footer />
-				</div>
+						<section className="popups">
+							<EditProfilePopup
+								isOpen={isEditProfilePopupOpen}
+								onClose={closeAllPopUps}
+								onUpdateUser={handleUpdateUser}
+								isLoading={isLoading}
+							/>
+							<AddPlacePopup
+								isOpen={isAddPlacePopupOpen}
+								onClose={closeAllPopUps}
+								onAddPlaceSubmit={handleAddPlaceSubmit}
+								isLoading={isLoading}
+							/>
+							<EditAvatarPopup
+								isOpen={isEditAvatarPopupOpen}
+								onClose={closeAllPopUps}
+								onUpdateAvatar={handleUpdateAvatar}
+								isLoading={isLoading}
+							/>
+							<PopupWithForm
+								name={"delete"}
+								title={"Are you sure?"}
+								onClose={closeAllPopUps}
+								buttonText={"Yes"}
+								isLoading={isLoading}
+							/>
+							<PopupWithImage
+								onClose={closeAllPopUps}
+								isOpen={isImagePopupOpen}
+								selectedCard={selectedCard}
+							/>
+						</section>
+						<Footer />
+					</ProtectedRoute>
+					<Route path={'/login'}>
+						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/login' />}
+						<Login />
+					</Route>
+					<Route path={'/signup'}>
+						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/signup' />}
+						<Register />
+					</Route>
+					<Route>
+						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/login' />}
+					</Route>
+				</Switch>
 			</div>
+
 		</CurrentUserContext.Provider>
 	);
 }
