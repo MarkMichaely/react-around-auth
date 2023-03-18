@@ -16,4 +16,4 @@ This project was written using React framework.
 
 **GitHub Pages**
 
-https://markmichaely.github.io/around-react/
+https://markmichaely.github.io/around-react-auth/
