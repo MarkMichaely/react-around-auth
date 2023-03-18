@@ -15,20 +15,20 @@ function Login({ isLoggedIn, children, ...props }) {
     }
     function handleSubmit(e) {
         e.preventDefault();
-        // props.onUpdateUser({ name, about: password });
+        props.onLogin({ password, email })
     }
 
     return (
         <div className={"auth"}>
             <h2 className="auth__title">Log in</h2>
             <form
-                onSubmit={props.onSubmit}
+                onSubmit={handleSubmit}
                 className={`auth__form`}
             >
                 <fieldset className="auth__fieldset">
                     <input
                         type="email"
-                        id="name"
+                        id="email"
                         name="email"
                         className="auth__input"
                         placeholder="Email"
@@ -40,7 +40,7 @@ function Login({ isLoggedIn, children, ...props }) {
                 <fieldset className="auth__fieldset">
                     <input
                         type="password"
-                        id="name"
+                        id="password"
                         name="password"
                         className="auth__input"
                         placeholder="Password"
@@ -51,7 +51,7 @@ function Login({ isLoggedIn, children, ...props }) {
                 </fieldset>
                 <fieldset className="auth__fieldset auth__fieldset_type_submit">
                     <button className="auth__button" type="submit">
-                        {props.buttonText}
+                        Log in
                     </button>
                 </fieldset>
             </form>

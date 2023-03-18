@@ -9,22 +9,28 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
+import InfoToolTip from "./InfoToolTip";
+import { register, login, checkJwt } from "../utils/auth";
 
 function App() {
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 	const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+	const [isToolTipPopupOpen, setIsToolTipPopupOpen] = useState(false);
 	const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
 	const [currentUser, setCurrentUser] = useState({});
 	const [cards, setCards] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isRegisterSuccessful, setIsRegisterSuccessful] = useState(false);
+	const [userEmail, setUserEmail] = useState('');
 
+	const history = useHistory();
 	React.useEffect(() => {
 		api
 			.getInitialCards()
@@ -64,6 +70,7 @@ function App() {
 		setIsEditAvatarPopupOpen(false);
 		setIsEditProfilePopupOpen(false);
 		setIsImagePopupOpen(false);
+		setIsToolTipPopupOpen(false);
 	};
 	useEffect(() => {
 		const closeByEscape = (e) => {
@@ -135,11 +142,55 @@ function App() {
 			.catch((err) => console.log(err))
 			.finally(() => setIsLoading(false));
 	}
+	function handleRegister(userData) {
+		const { password, email } = userData;
+		register(password, email)
+			.then(() => {
+				setIsRegisterSuccessful(true);
+				setIsToolTipPopupOpen(true);
+				history.push('/login');
+			})
+			.catch((err) => {
+				setIsRegisterSuccessful(false);
+				setIsToolTipPopupOpen(true);
+				console.log(err);
+			});
+	}
+	function handleLogin(userData) {
+		const { password, email } = userData;
+		login(password, email)
+			.then((res) => {
+				setIsLoggedIn(true);
+				setUserEmail(email);
+				history.push('/');
+			})
+			.catch((err) => {
+				setIsRegisterSuccessful(false);
+				setIsToolTipPopupOpen(true);
+				console.log(err)
+			});
+	}
+	function handleLogout() {
+		localStorage.removeItem('jwt');
+		history.push('/login');
+	}
+	useEffect(() => {
+		const jwt = localStorage.getItem('jwt');
+		if (jwt)
+			checkJwt(jwt)
+				.then((res) => {
+					setUserEmail(res.data.email);
+					setIsLoggedIn(true);
+					history.push('/');
+				})
+				.catch((err) => console.log(err));
+	}, []);
+
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
 
 			<div className="page">
-				<Header />
+				<Header onLogout={handleLogout} />
 				<Switch>
 					<ProtectedRoute exact path='/' isLoggedIn={isLoggedIn}>
 						<Main
@@ -187,11 +238,21 @@ function App() {
 					</ProtectedRoute>
 					<Route path={'/login'}>
 						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/login' />}
-						<Login />
+						<Login onLogin={handleLogin} />
+						<InfoToolTip
+							isOpen={isToolTipPopupOpen}
+							onClose={closeAllPopUps}
+							isRegisterSuccessful={isRegisterSuccessful}
+						/>
 					</Route>
 					<Route path={'/signup'}>
 						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/signup' />}
-						<Register />
+						<Register onRegister={handleRegister} />
+						<InfoToolTip
+							isOpen={isToolTipPopupOpen}
+							onClose={closeAllPopUps}
+							isRegisterSuccessful={isRegisterSuccessful}
+						/>
 					</Route>
 					<Route>
 						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/login' />}

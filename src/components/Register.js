@@ -15,6 +15,7 @@ function Register({ isLoggedIn, children, ...props }) {
     }
     function handleSubmit(e) {
         e.preventDefault();
+        props.onRegister({ password, email })
         // props.onUpdateUser({ name, about: password });
     }
 
@@ -22,13 +23,13 @@ function Register({ isLoggedIn, children, ...props }) {
         <div className={"auth"}>
             <h2 className="auth__title">Sign up</h2>
             <form
-                onSubmit={props.onSubmit}
+                onSubmit={handleSubmit}
                 className={`auth__form`}
             >
                 <fieldset className="auth__fieldset">
                     <input
                         type="email"
-                        id="name"
+                        id="email"
                         name="email"
                         className="auth__input"
                         placeholder="Email"
@@ -40,7 +41,7 @@ function Register({ isLoggedIn, children, ...props }) {
                 <fieldset className="auth__fieldset">
                     <input
                         type="password"
-                        id="name"
+                        id="password"
                         name="password"
                         className="auth__input"
                         placeholder="Password"
@@ -51,7 +52,7 @@ function Register({ isLoggedIn, children, ...props }) {
                 </fieldset>
                 <fieldset className="auth__fieldset auth__fieldset_type_submit">
                     <button className="auth__button" type="submit">
-                        {props.buttonText}
+                        Sign up
                     </button>
                 </fieldset>
             </form>

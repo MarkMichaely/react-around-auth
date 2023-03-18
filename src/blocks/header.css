@@ -4,13 +4,29 @@
 	padding-top: 45px;
 	margin-left: auto;
 	margin-right: auto;
-	/* margin-bottom: 37px; */
 	border-bottom: 1px solid rgba(84, 84, 84, 0.7);
 	background-color: inherit;
+	display: flex;
+	justify-content: space-between;
+}
+.header__link {
+	font-family: "Inter", Arial, sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 22px;
+	text-align: right;
+	opacity: 1;
+	transition: ease 0.2s;
+	color: #ffffff;
+	text-decoration-line: none;
+}
+.header__link:hover {
+	opacity: 0.6;
+	cursor: pointer;
 }
 @media screen and (max-width: 730px) {
 	.header {
 		margin-top: max(28px, 8.75vw);
-		/* margin-bottom: 42px; */
 	}
 }
