@@ -25,6 +25,32 @@
 	opacity: 0.6;
 	cursor: pointer;
 }
+.header__menu {
+	display: flex;
+	justify-content: space-between;
+	gap: 24px;
+	font-family: "Inter", Arial, sans-serif;
+	font-style: normal;
+	font-size: 18px;
+	line-height: 22px;
+	text-align: right;
+}
+.header__email {
+	font-weight: 500;
+	color: #ffffff;
+	margin: 0;
+	align-self: center;
+}
+.header__logout {
+	all: unset;
+	font-weight: 400;
+	color: #a9a9a9;
+	cursor: pointer;
+}
+.header__logout:focus {
+	outline: auto;
+}
+
 @media screen and (max-width: 730px) {
 	.header {
 		margin-top: max(28px, 8.75vw);

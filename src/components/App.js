@@ -170,8 +170,9 @@ function App() {
 				console.log(err)
 			});
 	}
-	function handleLogout() {
+	const handleLogout = () => {
 		localStorage.removeItem('jwt');
+		setIsLoggedIn(false);
 		history.push('/login');
 	}
 	useEffect(() => {
@@ -190,7 +191,7 @@ function App() {
 		<CurrentUserContext.Provider value={currentUser}>
 
 			<div className="page">
-				<Header onLogout={handleLogout} />
+				<Header onLogout={handleLogout} email={userEmail} />
 				<Switch>
 					<ProtectedRoute exact path='/' isLoggedIn={isLoggedIn}>
 						<Main
