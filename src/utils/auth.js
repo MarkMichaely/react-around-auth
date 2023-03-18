@@ -20,7 +20,10 @@ export function register(password, email) {
         .then((res) => {
             return checkResponse(res);
         })
-        .catch(() => console.log("400 - one of the fields was filled in incorrectly"))
+        .catch(() => {
+            const err = new Error("400 - one of the fields was filled in incorrectly")
+            throw err;
+        });
 
 }
 
@@ -46,7 +49,10 @@ export function login(password, email) {
             }
             else return;
         })
-        .catch(() => console.log("401 - the user with the specified email not found "))
+        .catch(() => {
+            const err = new Error("401 - the user with the specified email not found")
+            throw err;
+        })
 }
 export function checkJwt(jwt) {
     if (!jwt) {
@@ -63,5 +69,8 @@ export function checkJwt(jwt) {
         .then((res) => {
             return checkResponse(res);
         })
-        .catch(() => console.log("401 — The provided token is invalid "))
+        .catch(() => {
+            const err = new Error("401 — The provided token is invalid")
+            throw err;
+        })
 }

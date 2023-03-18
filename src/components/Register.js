@@ -16,7 +16,7 @@ function Register({ isLoggedIn, children, ...props }) {
     function handleSubmit(e) {
         e.preventDefault();
         props.onRegister({ password, email })
-        // props.onUpdateUser({ name, about: password });
+
     }
 
     return (

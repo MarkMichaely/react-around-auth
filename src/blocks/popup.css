@@ -83,14 +83,6 @@
 	right: 0;
 	margin-left: 100%;
 }
-.popup__close-btn_type_tool-tip {
-	right: 0;
-	margin-left: 100%;
-}
-.popup__box_type_tool-tip {
-	display: flex;
-	flex-direction: column;
-}
 
 @media screen and (max-width: 597px) {
 	.popup__box {

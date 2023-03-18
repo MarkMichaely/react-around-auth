@@ -147,14 +147,13 @@ function App() {
 		register(password, email)
 			.then(() => {
 				setIsRegisterSuccessful(true);
-				setIsToolTipPopupOpen(true);
 				history.push('/login');
 			})
 			.catch((err) => {
 				setIsRegisterSuccessful(false);
-				setIsToolTipPopupOpen(true);
 				console.log(err);
-			});
+			})
+			.finally(() => setIsToolTipPopupOpen(true));
 	}
 	function handleLogin(userData) {
 		const { password, email } = userData;
@@ -240,27 +239,21 @@ function App() {
 					<Route path={'/login'}>
 						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/login' />}
 						<Login onLogin={handleLogin} />
-						<InfoToolTip
-							isOpen={isToolTipPopupOpen}
-							onClose={closeAllPopUps}
-							isRegisterSuccessful={isRegisterSuccessful}
-						/>
 					</Route>
 					<Route path={'/signup'}>
 						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/signup' />}
 						<Register onRegister={handleRegister} />
-						<InfoToolTip
-							isOpen={isToolTipPopupOpen}
-							onClose={closeAllPopUps}
-							isRegisterSuccessful={isRegisterSuccessful}
-						/>
 					</Route>
 					<Route>
 						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/login' />}
 					</Route>
 				</Switch>
 			</div>
-
+			<InfoToolTip
+				isOpen={isToolTipPopupOpen}
+				onClose={closeAllPopUps}
+				isRegisterSuccessful={isRegisterSuccessful}
+			/>
 		</CurrentUserContext.Provider>
 	);
 }

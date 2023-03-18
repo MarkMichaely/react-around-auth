@@ -20,6 +20,7 @@ function InfoToolTip(props) {
                 />
             </button>
             <img className="info-tool-tip__image "
+                alt="info tool tip mark"
                 src={props.isRegisterSuccessful ? registerSuccess : registerFail
                 } />
             <p className="info-tool-tip__text ">{props.isRegisterSuccessful ?
