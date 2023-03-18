@@ -188,7 +188,7 @@ function App() {
 
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
-			<div className="body">
+			<body className="body">
 				<div className="page">
 					<Header onLogout={handleLogout} email={userEmail} />
 					<Switch>
@@ -249,7 +249,7 @@ function App() {
 						</Route>
 					</Switch>
 				</div>
-			</div>
+			</body>
 			<InfoToolTip
 				isOpen={isToolTipPopupOpen}
 				onClose={closeAllPopUps}
