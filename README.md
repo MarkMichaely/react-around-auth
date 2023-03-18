@@ -8,12 +8,11 @@
 
 **Description**
 
-This project is a representation of the develeoper's ability to rewrite ones code from Javascript to a React application.  
+This project is a representation of the develeoper's ability to add basic authoriztion to one's code.
 
 **Technologies**
 
 This project was written using React framework.
-
 
 **GitHub Pages**
 
