@@ -188,65 +188,67 @@ function App() {
 
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
-			<div className="page">
-				<Header onLogout={handleLogout} email={userEmail} />
-				<Switch>
-					<ProtectedRoute exact path='/' isLoggedIn={isLoggedIn}>
-						<Main
-							onEditProfileClick={handleEditProfileClick}
-							onAddPlaceClick={handleAddPlaceClick}
-							onEditAvatarClick={handleEditAvatarClick}
-							onCardClick={handleCardClick}
-							onCardLike={handleCardLike}
-							onCardDelete={handleCardDelete}
-							cards={cards}
-						/>
-						<section className="popups">
-							<EditProfilePopup
-								isOpen={isEditProfilePopupOpen}
-								onClose={closeAllPopUps}
-								onUpdateUser={handleUpdateUser}
-								isLoading={isLoading}
+			<div className="page-wrapper">
+				<div className="page">
+					<Header onLogout={handleLogout} email={userEmail} />
+					<Switch>
+						<ProtectedRoute exact path='/' isLoggedIn={isLoggedIn}>
+							<Main
+								onEditProfileClick={handleEditProfileClick}
+								onAddPlaceClick={handleAddPlaceClick}
+								onEditAvatarClick={handleEditAvatarClick}
+								onCardClick={handleCardClick}
+								onCardLike={handleCardLike}
+								onCardDelete={handleCardDelete}
+								cards={cards}
 							/>
-							<AddPlacePopup
-								isOpen={isAddPlacePopupOpen}
-								onClose={closeAllPopUps}
-								onAddPlaceSubmit={handleAddPlaceSubmit}
-								isLoading={isLoading}
-							/>
-							<EditAvatarPopup
-								isOpen={isEditAvatarPopupOpen}
-								onClose={closeAllPopUps}
-								onUpdateAvatar={handleUpdateAvatar}
-								isLoading={isLoading}
-							/>
-							<PopupWithForm
-								name={"delete"}
-								title={"Are you sure?"}
-								onClose={closeAllPopUps}
-								buttonText={"Yes"}
-								isLoading={isLoading}
-							/>
-							<PopupWithImage
-								onClose={closeAllPopUps}
-								isOpen={isImagePopupOpen}
-								selectedCard={selectedCard}
-							/>
-						</section>
-						<Footer />
-					</ProtectedRoute>
-					<Route path={'/login'}>
-						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/login' />}
-						<Login onLogin={handleLogin} />
-					</Route>
-					<Route path={'/signup'}>
-						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/signup' />}
-						<Register onRegister={handleRegister} />
-					</Route>
-					<Route>
-						{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/login' />}
-					</Route>
-				</Switch>
+							<section className="popups">
+								<EditProfilePopup
+									isOpen={isEditProfilePopupOpen}
+									onClose={closeAllPopUps}
+									onUpdateUser={handleUpdateUser}
+									isLoading={isLoading}
+								/>
+								<AddPlacePopup
+									isOpen={isAddPlacePopupOpen}
+									onClose={closeAllPopUps}
+									onAddPlaceSubmit={handleAddPlaceSubmit}
+									isLoading={isLoading}
+								/>
+								<EditAvatarPopup
+									isOpen={isEditAvatarPopupOpen}
+									onClose={closeAllPopUps}
+									onUpdateAvatar={handleUpdateAvatar}
+									isLoading={isLoading}
+								/>
+								<PopupWithForm
+									name={"delete"}
+									title={"Are you sure?"}
+									onClose={closeAllPopUps}
+									buttonText={"Yes"}
+									isLoading={isLoading}
+								/>
+								<PopupWithImage
+									onClose={closeAllPopUps}
+									isOpen={isImagePopupOpen}
+									selectedCard={selectedCard}
+								/>
+							</section>
+							<Footer />
+						</ProtectedRoute>
+						<Route path={'/login'}>
+							{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/login' />}
+							<Login onLogin={handleLogin} />
+						</Route>
+						<Route path={'/signup'}>
+							{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/signup' />}
+							<Register onRegister={handleRegister} />
+						</Route>
+						<Route>
+							{isLoggedIn ? <Redirect to='/' /> : <Redirect to='/login' />}
+						</Route>
+					</Switch>
+				</div>
 			</div>
 			<InfoToolTip
 				isOpen={isToolTipPopupOpen}
